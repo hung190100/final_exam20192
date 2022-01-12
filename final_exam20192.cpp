@@ -1,5 +1,6 @@
 #include <iostream>
-#include<string>
+#include <string>
+#include <iomanip>
 
 using namespace std;
 
@@ -15,7 +16,7 @@ template <class T> class List {
     int count; // Số node
 public:
     List() : count(0){ }
-    ~List();//Hàm hủy
+    ~List(){ };//Hàm hủy
 
     // Xóa toàn bộ list
     void RemoveAll(){
@@ -47,7 +48,7 @@ public:
 
     // Chuyển list thành mảng
     T* ToArray(){
-        T* arr= new T[count];
+        T* arr = new T[count];
         Node<T> *p = head;
         for(int i = 0; i < count; i++, p = p -> Next){
             arr[i] = p -> Value;
@@ -62,7 +63,7 @@ public:
 
     Date(){Day = Month = Year = 0;}
 
-    Date(int y, int m, int d): Year(y), Month(m), Day(d) {}//Ham khoi tao thiết lập các gia trị năm thang ngày
+    Date(int y, int m, int d): Year(y), Month(m), Day(d) { }//Ham khoi tao thiết lập các gia trị năm thang ngày
 
     friend ostream& operator << (ostream& output, const Date& d) {
         if (d.Day < 10 && d.Month < 10) {
@@ -86,7 +87,10 @@ public:
     ThiSinh(){}
 
     ThiSinh(const char *hoTen, const Date ns, double toan, double ly, double anh) {
-        HoTen = *hoTen;
+        /*for (int i = 0; i < 20; i++) {
+            HoTen[i] = *(hoTen + 1);
+        }*/
+        HoTen = hoTen;
         NgaySinh = ns;
         Toan = toan;
         Ly = ly;
@@ -102,7 +106,7 @@ public:
     } //Trung binh các điểm
 
     friend ostream& operator << (ostream& output, const ThiSinh& ts) {
-        output << ts.HoTen << "\t" << ts.NgaySinh << "\t";
+        output << setw(20) << left << ts.HoTen << "\t" << ts.NgaySinh << "\t";
         output << ts.Toan << "\t" << ts.Ly << "\t" << ts.Anh << "\t";
         output << ts.Tong() << "\t" << ts.TB();
     }//toan tu luong ra
@@ -136,4 +140,43 @@ int main()
     {
         cout << *p -> Value << endl;
     }
+
+// Muc 2
+    cout << "\n";
+    cout << setfill('-');
+    cout <<  setw(76) << "-" << endl;
+    cout << setfill(' ');
+    cout << "Danh sach sau khi sap xep la:\n" << endl;
+
+    // Sap xep
+    for (int i = 0; i < soLuong; i++) {
+        for (int j = i + 1; j < soLuong; j++) {
+            if (arr[i] -> Tong() < arr[j] -> Tong()) {
+                swap(arr[i], arr[j]);
+            }
+        }
+    }
+
+    ListThiSinh _list(arr);
+    auto q = _list.First();
+    for(int i = 0; i < soLuong; i++, q = q -> Next)
+    {
+        cout << *q -> Value << endl;
+    }
+
+// Muc 3
+    cout << "\n";
+    cout << setfill('-');
+    cout <<  setw(76) << "-" << endl;
+    cout << setfill(' ');
+
+    int c = 0; // bien dem
+    for (int i = 0; i < soLuong; i++) {
+        if (arr[i] -> TB() >= 8) {
+            c++;
+        }
+    }
+
+    cout << "So Thi sinh kha gioi la: " << c << endl;
+    cout << "Ty le Thi sinh kha gioi la: " << c << "/" << soLuong << endl;
 }
